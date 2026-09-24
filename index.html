@@ -248,13 +248,17 @@
             width: 100%;
         }
         
-        /* Proxy Section */
-        .proxy-section {
-            max-width: 1200px;
+        /* Proxy Section - NEW BETTER PROXY */
+        .proxy-container {
+            max-width: 1400px;
             margin: 0 auto;
+        }
+        
+        .proxy-selector {
             background: rgba(255,255,255,0.05);
             border-radius: 20px;
-            padding: 40px;
+            padding: 30px;
+            margin-bottom: 30px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -270,13 +274,36 @@
         .proxy-desc {
             text-align: center;
             color: #888;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         
-        .proxy-box {
+        .proxy-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .proxy-tab {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .proxy-tab:hover, .proxy-tab.active {
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+        }
+        
+        .proxy-input-box {
             display: flex;
             gap: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .proxy-input {
@@ -295,7 +322,7 @@
             border-color: #00d4ff;
         }
         
-        .proxy-btn {
+        .proxy-btn-main {
             padding: 18px 40px;
             border: none;
             border-radius: 15px;
@@ -307,21 +334,54 @@
             transition: transform 0.3s;
         }
         
-        .proxy-btn:hover {
+        .proxy-btn-main:hover {
             transform: scale(1.05);
+        }
+        
+        .proxy-iframe-container {
+            width: 100%;
+            height: 700px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #0c0c0c;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: none;
+        }
+        
+        .proxy-iframe-container.active {
+            display: block;
         }
         
         .proxy-iframe {
             width: 100%;
-            height: 700px;
+            height: 100%;
             border: none;
-            border-radius: 15px;
-            background: #0c0c0c;
-            display: none;
         }
         
-        .proxy-iframe.active {
-            display: block;
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .quick-link {
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .quick-link:hover {
+            background: rgba(0,212,255,0.2);
+            border-color: #00d4ff;
+            transform: translateY(-2px);
         }
         
         /* Game Player Modal */
@@ -451,7 +511,7 @@
             .header h1 {
                 font-size: 1.8em;
             }
-            .proxy-box {
+            .proxy-input-box {
                 flex-direction: column;
             }
             .container {
@@ -462,6 +522,10 @@
             }
             .cloud-grid {
                 grid-template-columns: 1fr;
+            }
+            .proxy-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
             }
         }
     </style>
@@ -596,19 +660,61 @@
         </div>
     </div>
 
-    <!-- Proxy Section -->
+    <!-- Proxy Section - BETTER PROXY -->
     <div id="proxy" class="section">
         <div class="container">
-            <div class="proxy-section">
-                <h2 class="proxy-title">🌐 Web Proxy</h2>
-                <p class="proxy-desc">Browse any website anonymously through our proxy</p>
-                
-                <div class="proxy-box">
-                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="https://example.com" value="https://google.com">
-                    <button class="proxy-btn" onclick="loadProxy()">Go</button>
+            <div class="proxy-container">
+                <div class="proxy-selector">
+                    <h2 class="proxy-title">🌐 Web Proxy</h2>
+                    <p class="proxy-desc">Browse any website anonymously. Choose a proxy service below:</p>
+                    
+                    <!-- Proxy Selection Tabs -->
+                    <div class="proxy-tabs">
+                        <button class="proxy-tab active" onclick="setProxy('holy')">Holy Unblocker</button>
+                        <button class="proxy-tab" onclick="setProxy('rammerhead')">Rammerhead</button>
+                        <button class="proxy-tab" onclick="setProxy('alloy')">Alloy</button>
+                        <button class="proxy-tab" onclick="setProxy('cors')">CORS Proxy</button>
+                        <button class="proxy-tab" onclick="setProxy('direct')">Direct Links</button>
+                    </div>
+                    
+                    <!-- URL Input -->
+                    <div class="proxy-input-box">
+                        <input type="text" class="proxy-input" id="proxyUrl" placeholder="https://example.com" value="https://google.com">
+                        <button class="proxy-btn-main" onclick="loadProxy()">🚀 Go</button>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div class="quick-links">
+                        <div class="quick-link" onclick="quickLink('https://google.com')">🔍 Google</div>
+                        <div class="quick-link" onclick="quickLink('https://youtube.com')">📺 YouTube</div>
+                        <div class="quick-link" onclick="quickLink('https://reddit.com')">🤖 Reddit</div>
+                        <div class="quick-link" onclick="quickLink('https://discord.com')">💬 Discord</div>
+                        <div class="quick-link" onclick="quickLink('https://twitter.com')">🐦 X/Twitter</div>
+                        <div class="quick-link" onclick="quickLink('https://twitch.tv')">📺 Twitch</div>
+                    </div>
                 </div>
                 
-                <iframe class="proxy-iframe" id="proxyFrame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                <!-- Proxy Iframe -->
+                <div class="proxy-iframe-container" id="proxyContainer">
+                    <iframe class="proxy-iframe" id="proxyFrame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads allow-top-navigation"></iframe>
+                </div>
+                
+                <!-- Direct Links Section (shown when Direct Links selected) -->
+                <div id="directLinks" style="display: none;">
+                    <div class="proxy-selector">
+                        <h3 style="text-align: center; margin-bottom: 20px; color: #00d4ff;">🔗 Working Proxy Links</h3>
+                        <div class="quick-links">
+                            <a href="https://holyunblocker.org" target="_blank" class="quick-link">🛡️ Holy Unblocker</a>
+                            <a href="https://beta.holyunblocker.org" target="_blank" class="quick-link">🛡️ Holy Unblocker Beta</a>
+                            <a href="https://rammerhead.net" target="_blank" class="quick-link">🦈 Rammerhead</a>
+                            <a href="https://ultravioletproxy.com" target="_blank" class="quick-link">☀️ Ultraviolet</a>
+                            <a href="https://womginx.net" target="_blank" class="quick-link">🌊 Womginx</a>
+                            <a href="https://hypertabs.net" target="_blank" class="quick-link">📑 Hypertabs</a>
+                            <a href="https://incognito.dev" target="_blank" class="quick-link">🕵️ Incognito</a>
+                            <a href="https://nebulaproxy.io" target="_blank" class="quick-link">🌌 Nebula</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -616,7 +722,7 @@
     <!-- About Section -->
     <div id="about" class="section">
         <div class="container">
-            <div class="proxy-section">
+            <div class="proxy-selector">
                 <h2 class="proxy-title">ℹ️ About Lumin Games</h2>
                 <p style="text-align: center; color: #888; margin-bottom: 30px;">
                     A modern unblocked game site powered by LuminSDK
@@ -636,23 +742,28 @@
                     </p>
                     
                     <p style="margin-bottom: 20px;">
+                        <strong>🌐 Proxy:</strong><br>
+                        Multiple proxy options including Holy Unblocker, Rammerhead, and CORS proxies.
+                        Browse blocked sites at school or work.
+                    </p>
+                    
+                    <p style="margin-bottom: 20px;">
                         <strong>🚀 Features:</strong><br>
                         • 1000+ browser games across all genres<br>
                         • Cloud gaming integration<br>
+                        • Multiple proxy options<br>
                         • Search and filter games<br>
                         • Works on school/work networks<br>
                         • No ads or popups<br>
-                        • Mobile-friendly design<br>
-                        • Built-in web proxy
+                        • Mobile-friendly design
                     </p>
                     
                     <p style="margin-bottom: 20px;">
                         <strong>📝 How to use:</strong><br>
                         1. Click on any game to play<br>
                         2. Try Cloud Gaming for AAA titles<br>
-                        3. Use the search to find specific games<br>
-                        4. Use the proxy to browse other sites<br>
-                        5. Bookmark for quick access
+                        3. Use the proxy to browse blocked sites<br>
+                        4. Bookmark for quick access
                     </p>
                     
                     <p style="text-align: center; margin-top: 40px; color: #888;">
@@ -686,13 +797,25 @@
     </div>
 
     <div class="footer">
-        <p>🎮 Powered by LuminSDK | 1000+ Free Games + Cloud Gaming | Hosted on JSDelivr/S3</p>
+        <p>🎮 Powered by LuminSDK | 1000+ Free Games + Cloud Gaming | Built-in Proxy</p>
     </div>
 
     <!-- Lumin SDK Script -->
     <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
     
     <script>
+        // Current proxy mode
+        let currentProxy = 'holy';
+        
+        // Proxy URLs
+        const proxyURLs = {
+            holy: 'https://holyunblocker.org/?q=',
+            rammerhead: 'https://rammerhead.net/?q=',
+            alloy: 'https://alloyproxy.net/?q=',
+            cors: 'https://api.allorigins.win/raw?url=',
+            direct: null
+        };
+
         // Initialize Lumin when loaded
         if (typeof Lumin !== 'undefined') {
             Lumin.init({
@@ -703,7 +826,6 @@
                 }
             });
         } else {
-            // Fallback if Lumin fails to load
             document.getElementById('lumin-games').innerHTML = 
                 '<div style="text-align: center; padding: 50px;">' +
                 '<h3>⚠️ Game Library Loading...</h3>' +
@@ -718,6 +840,59 @@
             
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
+        }
+
+        // Set proxy mode
+        function setProxy(mode) {
+            currentProxy = mode;
+            document.querySelectorAll('.proxy-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide direct links
+            const directLinks = document.getElementById('directLinks');
+            const proxyContainer = document.getElementById('proxyContainer');
+            
+            if (mode === 'direct') {
+                directLinks.style.display = 'block';
+                proxyContainer.classList.remove('active');
+            } else {
+                directLinks.style.display = 'none';
+            }
+        }
+
+        // Load proxy
+        function loadProxy() {
+            let url = document.getElementById('proxyUrl').value.trim();
+            const frame = document.getElementById('proxyFrame');
+            const container = document.getElementById('proxyContainer');
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            if (!url.startsWith('http')) {
+                url = 'https://' + url;
+            }
+            
+            if (currentProxy === 'direct') {
+                window.open(url, '_blank');
+                return;
+            }
+            
+            // Hide direct links, show iframe
+            document.getElementById('directLinks').style.display = 'none';
+            container.classList.add('active');
+            
+            // Load proxy
+            const proxyUrl = proxyURLs[currentProxy] + encodeURIComponent(url);
+            frame.src = proxyUrl;
+        }
+
+        // Quick link
+        function quickLink(url) {
+            document.getElementById('proxyUrl').value = url;
+            loadProxy();
         }
 
         // Open game in modal
@@ -748,21 +923,6 @@
             document.getElementById('cloudModal').classList.remove('active');
             document.getElementById('cloudFrame').src = '';
             document.body.style.overflow = 'auto';
-        }
-
-        // Load proxy
-        function loadProxy() {
-            let url = document.getElementById('proxyUrl').value;
-            const frame = document.getElementById('proxyFrame');
-            
-            if (!url.startsWith('http')) {
-                url = 'https://' + url;
-            }
-            
-            // Use CORS proxy
-            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-            frame.src = proxyUrl;
-            frame.classList.add('active');
         }
 
         // Close modal on backdrop click
