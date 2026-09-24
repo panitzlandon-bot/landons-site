@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumin Games - Unblocked Game Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(0,0,0,0.6);
+            padding: 25px;
+            text-align: center;
+            border-bottom: 2px solid #00d4ff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: #888;
+            margin-top: 8px;
+            font-size: 1.1em;
+        }
+        
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        /* Section */
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.4s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Lumin Games Container */
+        #lumin-games {
+            min-height: 600px;
+        }
+        
+        /* Custom styling for Lumin SDK */
+        .lumin-container {
+            --lumin-primary: #00d4ff;
+            --lumin-secondary: #7b2cbf;
+            --lumin-bg: rgba(0,0,0,0.3);
+            --lumin-card-bg: rgba(255,255,255,0.05);
+            --lumin-text: #ffffff;
+            --lumin-text-muted: #888888;
+        }
+        
+        /* Proxy Section */
+        .proxy-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .proxy-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .proxy-desc {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+        
+        .proxy-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .proxy-input {
+            flex: 1;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .proxy-input:focus {
+            border-color: #00d4ff;
+        }
+        
+        .proxy-btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .proxy-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .proxy-iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 15px;
+            background: #0c0c0c;
+            display: none;
+        }
+        
+        .proxy-iframe.active {
+            display: block;
+        }
+        
+        /* Game Player Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            width: 95%;
+            height: 95%;
+            background: #0c0c0c;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal-header {
+            background: rgba(0,0,0,0.8);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: #ff006e;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .game-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+        }
+        
+        /* Featured Banner */
+        .featured {
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2));
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+        
+        .featured h2 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+        
+        .featured p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .game-count {
+            display: inline-block;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            padding: 10px 25px;
+            border-radius: 30px;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 50px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 100px;
+            font-size: 1.2em;
+            color: #888;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .proxy-box {
+                flex-direction: column;
+            }
+            .container {
+                padding: 15px;
+            }
+            .featured {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>✨ Lumin Games</h1>
+        <p>1000+ Unblocked Games - Powered by LuminSDK</p>
+    </div>
+    
+    <div class="nav">
+        <button class="nav-btn active" onclick="showSection('games')">🎮 Games</button>
+        <button class="nav-btn" onclick="showSection('proxy')">🌐 Proxy</button>
+        <button class="nav-btn" onclick="showSection('about')">ℹ️ About</button>
+    </div>
+
+    <!-- Games Section -->
+    <div id="games" class="section active">
+        <div class="container">
+            <div class="featured">
+                <h2>🎮 Lumin Game Library</h2>
+                <p>Browse and play over 1000+ unblocked games instantly. No downloads, no ads, no restrictions.</p>
+                <div class="game-count">🎲 1000+ Games Available</div>
+            </div>
+            
+            <!-- Lumin Games Container -->
+            <div id="lumin-games" class="lumin-container">
+                <div class="loading">Loading game library...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proxy Section -->
+    <div id="proxy" class="section">
+        <div class="container">
+            <div class="proxy-section">
+                <h2 class="proxy-title">🌐 Web Proxy</h2>
+                <p class="proxy-desc">Browse any website anonymously through our proxy</p>
+                
+                <div class="proxy-box">
+                    <input type="text" class="proxy-input" id="proxyUrl" placeholder="https://example.com" value="https://google.com">
+                    <button class="proxy-btn" onclick="loadProxy()">Go</button>
+                </div>
+                
+                <iframe class="proxy-iframe" id="proxyFrame" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="section">
+        <div class="container">
+            <div class="proxy-section">
+                <h2 class="proxy-title">ℹ️ About Lumin Games</h2>
+                <p style="text-align: center; color: #888; margin-bottom: 30px;">
+                    A modern unblocked game site powered by LuminSDK
+                </p>
+                
+                <div style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: #ccc;">
+                    <p style="margin-bottom: 20px;">
+                        <strong>🎮 What is this?</strong><br>
+                        This site uses the Lumin Game Library, a collection of 1000+ browser-based games 
+                        that work on any device with no downloads required.
+                    </p>
+                    
+                    <p style="margin-bottom: 20px;">
+                        <strong>🚀 Features:</strong><br>
+                        • 1000+ games across all genres<br>
+                        • Search and filter games<br>
+                        • Works on school/work networks<br>
+                        • No ads or popups<br>
+                        • Mobile-friendly design<br>
+                        • Built-in web proxy
+                    </p>
+                    
+                    <p style="margin-bottom: 20px;">
+                        <strong>📝 How to use:</strong><br>
+                        1. Click on any game to play<br>
+                        2. Use the search to find specific games<br>
+                        3. Use the proxy to browse other sites<br>
+                        4. Bookmark for quick access
+                    </p>
+                    
+                    <p style="text-align: center; margin-top: 40px; color: #888;">
+                        Games provided by <a href="https://luminsdk.com" target="_blank" style="color: #00d4ff;">LuminSDK</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Player Modal -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Game</span>
+                <button class="close-btn" onclick="closeGame()">✕ Close</button>
+            </div>
+            <iframe class="game-frame" id="gameFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>🎮 Powered by LuminSDK | 1000+ Free Games | Hosted on JSDelivr/S3</p>
+    </div>
+
+    <!-- Lumin SDK Script -->
+    <script src="https://cdn.jsdelivr.net/gh/luminsdk/script@latest/lumin.min.js"></script>
+    
+    <script>
+        // Initialize Lumin when loaded
+        if (typeof Lumin !== 'undefined') {
+            Lumin.init({
+                container: '#lumin-games',
+                theme: 'dark',
+                onGameClick: function(game) {
+                    openGame(game.title, game.url);
+                }
+            });
+        } else {
+            // Fallback if Lumin fails to load
+            document.getElementById('lumin-games').innerHTML = 
+                '<div style="text-align: center; padding: 50px;">' +
+                '<h3>⚠️ Game Library Loading...</h3>' +
+                '<p>If games don\'t appear, refresh the page.</p>' +
+                '</div>';
+        }
+
+        // Show section
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Open game in modal
+        function openGame(title, url) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('gameFrame').src = url;
+            document.getElementById('gameModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close game
+        function closeGame() {
+            document.getElementById('gameModal').classList.remove('active');
+            document.getElementById('gameFrame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Load proxy
+        function loadProxy() {
+            let url = document.getElementById('proxyUrl').value;
+            const frame = document.getElementById('proxyFrame');
+            
+            if (!url.startsWith('http')) {
+                url = 'https://' + url;
+            }
+            
+            // Use CORS proxy
+            const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+            frame.src = proxyUrl;
+            frame.classList.add('active');
+        }
+
+        // Close modal on backdrop click
+        document.getElementById('gameModal').addEventListener('click', function(e) {
+            if (e.target === this) closeGame();
+        });
+
+        // Escape key to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeGame();
+        });
+    </script>
+</body>
+</html>
