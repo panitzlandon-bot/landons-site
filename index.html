@@ -111,6 +111,143 @@
             --lumin-text-muted: #888888;
         }
         
+        /* Cloud Gaming Section */
+        .cloud-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .cloud-card {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(123,44,191,0.1));
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cloud-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(123,44,191,0.2));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .cloud-card:hover::before {
+            opacity: 1;
+        }
+        
+        .cloud-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0,212,255,0.5);
+        }
+        
+        .cloud-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cloud-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .cloud-name {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cloud-desc {
+            color: #888;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .cloud-games {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .game-tag {
+            background: rgba(0,212,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00d4ff;
+        }
+        
+        .cloud-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .cloud-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Cloud Player Modal */
+        .cloud-player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .cloud-player-modal.active {
+            display: flex;
+        }
+        
+        .cloud-player-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cloud-player-header {
+            background: rgba(0,0,0,0.9);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .cloud-player-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
+        }
+        
         /* Proxy Section */
         .proxy-section {
             max-width: 1200px;
@@ -281,6 +418,17 @@
             font-weight: 600;
         }
         
+        /* Warning Box */
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #ffc107;
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -312,17 +460,21 @@
             .featured {
                 padding: 30px 20px;
             }
+            .cloud-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>✨ Lumin Games</h1>
-        <p>1000+ Unblocked Games - Powered by LuminSDK</p>
+        <p>1000+ Unblocked Games + Cloud Gaming - Powered by LuminSDK</p>
     </div>
     
     <div class="nav">
         <button class="nav-btn active" onclick="showSection('games')">🎮 Games</button>
+        <button class="nav-btn" onclick="showSection('cloud')">☁️ Cloud Gaming</button>
         <button class="nav-btn" onclick="showSection('proxy')">🌐 Proxy</button>
         <button class="nav-btn" onclick="showSection('about')">ℹ️ About</button>
     </div>
@@ -339,6 +491,107 @@
             <!-- Lumin Games Container -->
             <div id="lumin-games" class="lumin-container">
                 <div class="loading">Loading game library...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloud Gaming Section -->
+    <div id="cloud" class="section">
+        <div class="container">
+            <div class="featured">
+                <h2>☁️ Cloud Gaming</h2>
+                <p>Play AAA games like GTA, Fortnite, Minecraft & more via cloud streaming services</p>
+                <div class="game-count">🎮 Play AAA Games Instantly</div>
+            </div>
+            
+            <div class="warning-box">
+                ⚠️ <strong>Note:</strong> Cloud gaming services require accounts and may have subscription fees. Some may not work through iframes due to security restrictions.
+            </div>
+            
+            <div class="cloud-grid">
+                <!-- Xbox Cloud Gaming -->
+                <div class="cloud-card" onclick="openCloudGame('Xbox Cloud Gaming', 'https://www.xbox.com/play')">
+                    <div class="cloud-icon">🎮</div>
+                    <div class="cloud-name">Xbox Cloud Gaming</div>
+                    <div class="cloud-desc">Play Xbox Game Pass games instantly. 100+ high-quality games including Halo, Forza, and Minecraft.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">Halo Infinite</span>
+                        <span class="game-tag">Forza</span>
+                        <span class="game-tag">Minecraft</span>
+                        <span class="game-tag">GTA V</span>
+                    </div>
+                    <button class="cloud-btn">Launch Xbox Cloud</button>
+                </div>
+                
+                <!-- NVIDIA GeForce NOW -->
+                <div class="cloud-card" onclick="openCloudGame('GeForce NOW', 'https://play.geforcenow.com')">
+                    <div class="cloud-icon">⚡</div>
+                    <div class="cloud-name">NVIDIA GeForce NOW</div>
+                    <div class="cloud-desc">Stream PC games you own from Steam, Epic, and more. RTX graphics without expensive hardware.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">Cyberpunk 2077</span>
+                        <span class="game-tag">Fortnite</span>
+                        <span class="game-tag">Apex Legends</span>
+                        <span class="game-tag">GTA V</span>
+                    </div>
+                    <button class="cloud-btn">Launch GeForce NOW</button>
+                </div>
+                
+                <!-- Amazon Luna -->
+                <div class="cloud-card" onclick="openCloudGame('Amazon Luna', 'https://luna.amazon.com')">
+                    <div class="cloud-icon">🌙</div>
+                    <div class="cloud-name">Amazon Luna</div>
+                    <div class="cloud-desc">Amazon's cloud gaming service with channels for Ubisoft, Jackbox, and retro games.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">Assassin's Creed</span>
+                        <span class="game-tag">Far Cry</span>
+                        <span class="game-tag">Watch Dogs</span>
+                        <span class="game-tag">Jackbox</span>
+                    </div>
+                    <button class="cloud-btn">Launch Luna</button>
+                </div>
+                
+                <!-- Boosteroid -->
+                <div class="cloud-card" onclick="openCloudGame('Boosteroid', 'https://boosteroid.com')">
+                    <div class="cloud-icon">🚀</div>
+                    <div class="cloud-name">Boosteroid</div>
+                    <div class="cloud-desc">European cloud gaming platform with access to Steam, Epic, Battle.net, and more.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">Call of Duty</span>
+                        <span class="game-tag">GTA V</span>
+                        <span class="game-tag">Valorant</span>
+                        <span class="game-tag">WoW</span>
+                    </div>
+                    <button class="cloud-btn">Launch Boosteroid</button>
+                </div>
+                
+                <!-- Google Play (Android Games) -->
+                <div class="cloud-card" onclick="openCloudGame('Google Play Games', 'https://play.google.com/googleplaygames')">
+                    <div class="cloud-icon">📱</div>
+                    <div class="cloud-name">Google Play Games</div>
+                    <div class="cloud-desc">Play Android games on PC. Includes popular mobile titles with keyboard and mouse support.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">GTA Mobile</span>
+                        <span class="game-tag">PUBG Mobile</span>
+                        <span class="game-tag">Call of Duty Mobile</span>
+                        <span class="game-tag">Asphalt 9</span>
+                    </div>
+                    <button class="cloud-btn">Launch Play Games</button>
+                </div>
+                
+                <!-- AirGPU -->
+                <div class="cloud-card" onclick="openCloudGame('AirGPU', 'https://airgpu.com')">
+                    <div class="cloud-icon">💻</div>
+                    <div class="cloud-name">AirGPU</div>
+                    <div class="cloud-desc">Rent a cloud gaming PC by the hour. Full Windows desktop with RTX 4080 graphics.</div>
+                    <div class="cloud-games">
+                        <span class="game-tag">Any Steam Game</span>
+                        <span class="game-tag">Epic Games</span>
+                        <span class="game-tag">Battle.net</span>
+                        <span class="game-tag">Emulators</span>
+                    </div>
+                    <button class="cloud-btn">Launch AirGPU</button>
+                </div>
             </div>
         </div>
     </div>
@@ -377,8 +630,15 @@
                     </p>
                     
                     <p style="margin-bottom: 20px;">
+                        <strong>☁️ Cloud Gaming:</strong><br>
+                        Access AAA titles like GTA, Fortnite, and Minecraft through cloud streaming services.
+                        Play console/PC quality games on any device with a good internet connection.
+                    </p>
+                    
+                    <p style="margin-bottom: 20px;">
                         <strong>🚀 Features:</strong><br>
-                        • 1000+ games across all genres<br>
+                        • 1000+ browser games across all genres<br>
+                        • Cloud gaming integration<br>
                         • Search and filter games<br>
                         • Works on school/work networks<br>
                         • No ads or popups<br>
@@ -389,9 +649,10 @@
                     <p style="margin-bottom: 20px;">
                         <strong>📝 How to use:</strong><br>
                         1. Click on any game to play<br>
-                        2. Use the search to find specific games<br>
-                        3. Use the proxy to browse other sites<br>
-                        4. Bookmark for quick access
+                        2. Try Cloud Gaming for AAA titles<br>
+                        3. Use the search to find specific games<br>
+                        4. Use the proxy to browse other sites<br>
+                        5. Bookmark for quick access
                     </p>
                     
                     <p style="text-align: center; margin-top: 40px; color: #888;">
@@ -413,8 +674,19 @@
         </div>
     </div>
 
+    <!-- Cloud Gaming Player Modal -->
+    <div class="cloud-player-modal" id="cloudModal">
+        <div class="cloud-player-content">
+            <div class="cloud-player-header">
+                <span class="modal-title" id="cloudModalTitle">Cloud Gaming</span>
+                <button class="close-btn" onclick="closeCloudGame()">✕ Close</button>
+            </div>
+            <iframe class="cloud-player-frame" id="cloudFrame" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-downloads"></iframe>
+        </div>
+    </div>
+
     <div class="footer">
-        <p>🎮 Powered by LuminSDK | 1000+ Free Games | Hosted on JSDelivr/S3</p>
+        <p>🎮 Powered by LuminSDK | 1000+ Free Games + Cloud Gaming | Hosted on JSDelivr/S3</p>
     </div>
 
     <!-- Lumin SDK Script -->
@@ -463,6 +735,21 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Open cloud gaming service
+        function openCloudGame(title, url) {
+            document.getElementById('cloudModalTitle').textContent = title;
+            document.getElementById('cloudFrame').src = url;
+            document.getElementById('cloudModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close cloud gaming
+        function closeCloudGame() {
+            document.getElementById('cloudModal').classList.remove('active');
+            document.getElementById('cloudFrame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
         // Load proxy
         function loadProxy() {
             let url = document.getElementById('proxyUrl').value;
@@ -483,9 +770,16 @@
             if (e.target === this) closeGame();
         });
 
+        document.getElementById('cloudModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCloudGame();
+        });
+
         // Escape key to close
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeGame();
+            if (e.key === 'Escape') {
+                closeGame();
+                closeCloudGame();
+            }
         });
     </script>
 </body>
